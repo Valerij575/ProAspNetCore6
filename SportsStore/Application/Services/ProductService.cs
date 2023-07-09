@@ -11,9 +11,17 @@ namespace SportsStore.Application.Services
         {
             _repository = repository;
         }
-        public List<Product> GetProducts()
+        public List<Product> GetProducts(string category = null)
         {
-            return _repository.Products.ToList();
+            var result = _repository.Products;
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                result = result.Where(p => p.Category != null && p.Category == category);
+            }
+
+            return result.ToList();    
+
         }
     }
 }
