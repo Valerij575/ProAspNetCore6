@@ -15,10 +15,10 @@ namespace SportsStore.Controllers
             _service = service;
         }
 
-        public ViewResult Index(int productPage = 1)
+        public ViewResult Index(string category = null, int productPage = 1)
         {
             var result = new ProductListViewModel{
-                Products = _service.GetProducts()
+                Products = _service.GetProducts(category)
                                     .OrderBy(x => x.ProductId)
                                     .Skip((productPage - 1)* PageSize)
                                     .Take(PageSize),
@@ -26,8 +26,9 @@ namespace SportsStore.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = _service.GetProducts().Count
-                }
+                    TotalItems = _service.GetProducts(category).Count
+                },
+                CurrentCategory = category
             };
             return View(result);
         }
