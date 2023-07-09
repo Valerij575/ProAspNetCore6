@@ -13,8 +13,9 @@ public class HomeControllerTests
     public void Can_Use_Service()
     {
         // Arrange
+        string category = "Soccer";
         Mock<IProductService> mock = new Mock<IProductService>();
-        mock.Setup(m => m.GetProducts()).Returns(new List<Product>
+        mock.Setup(m => m.GetProducts(category)).Returns(new List<Product>
         {
             new Product {ProductId = 1, Name = "P1"},
             new Product {ProductId = 2, Name = "P2"}
@@ -37,8 +38,9 @@ public class HomeControllerTests
     public void Can_Pagination()
     {
         // Arrange
+        string category = "";
         Mock<IProductService> mock = new Mock<IProductService>();
-        mock.Setup(m => m.GetProducts()).Returns(new List<Product>
+        mock.Setup(m => m.GetProducts(category)).Returns(new List<Product>
         {
             new Product {ProductId = 1, Name = "P1"},
             new Product {ProductId = 2, Name = "P2"},
@@ -52,7 +54,7 @@ public class HomeControllerTests
         controller.PageSize = 3;
 
         // Act
-        ProductListViewModel result = controller.Index(2) ?.ViewData.Model as ProductListViewModel ?? new();
+        ProductListViewModel result = controller.Index(category, 2) ?.ViewData.Model as ProductListViewModel ?? new();
 
         // Assert
         List<Product> products = result.Products.ToList() ?? new List<Product>();
@@ -66,8 +68,9 @@ public class HomeControllerTests
     public void Can_Send_Pagination_ViewModel()
     {
         // Arrange
+        string category = "";
         Mock<IProductService> mock = new Mock<IProductService>();
-        mock.Setup(m => m.GetProducts()).Returns(new List<Product>
+        mock.Setup(m => m.GetProducts(category)).Returns(new List<Product>
         {
             new Product {ProductId = 1, Name = "P1"},
             new Product {ProductId = 2, Name = "P2"},
@@ -81,7 +84,7 @@ public class HomeControllerTests
         controller.PageSize = 3;
 
         // Act
-        ProductListViewModel result = controller.Index(2)?.ViewData.Model as ProductListViewModel ?? new();
+        ProductListViewModel result = controller.Index(category, 2)?.ViewData.Model as ProductListViewModel ?? new();
 
         // Assert
         PagingInfo pageInfo = result.PagingInfo;
